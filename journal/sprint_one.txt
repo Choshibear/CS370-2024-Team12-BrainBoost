@@ -1,0 +1,2 @@
+9/30 - 10/11
+This sprint is focused on the GUI skeleton of the project. this includes 6 JFrame classes. these pages/frames will make up our app
