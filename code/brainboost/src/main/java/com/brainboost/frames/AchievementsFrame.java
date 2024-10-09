@@ -8,7 +8,7 @@ import java.awt.event.MouseEvent;
 
 public class AchievementsFrame extends JFrame
 {
-    private JLabel imageLabel, nameLabel, descriptionLabel, statusLabel;
+    private JLabel imageLabel, nameLabel, descriptionLabel;
 
     public AchievementsFrame()
     {
@@ -33,7 +33,15 @@ public class AchievementsFrame extends JFrame
             int index = i;
 
             //load image
-            ImageIcon image = new ImageIcon("code\\brainboost\\imgs\\" + index + ".png");
+            ImageIcon image = new ImageIcon();
+            if(checkUnlock(index-1))
+            {
+                image = new ImageIcon("code\\brainboost\\imgs\\" + index + ".png");
+            }
+            else
+            {
+                image = new ImageIcon("code\\brainboost\\imgs\\locked.jpg");
+            }
             //scale image down
             Image imageScaled = image.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
             ImageIcon scaledIcon = new ImageIcon(imageScaled);
@@ -57,17 +65,14 @@ public class AchievementsFrame extends JFrame
         imageLabel = new JLabel();
         nameLabel = new JLabel();
         descriptionLabel = new JLabel();
-        statusLabel = new JLabel();
 
         imageLabel.setAlignmentX(CENTER_ALIGNMENT);
         nameLabel.setAlignmentX(CENTER_ALIGNMENT);
         descriptionLabel.setAlignmentX(CENTER_ALIGNMENT);
-        statusLabel.setAlignmentX(CENTER_ALIGNMENT);
 
         detailPanel.add(imageLabel);
         detailPanel.add(nameLabel);
         detailPanel.add(descriptionLabel);
-        detailPanel.add(statusLabel);
     
         //main panel
         JPanel mainPanel = new JPanel();
@@ -94,30 +99,26 @@ public class AchievementsFrame extends JFrame
             "Description 3", 
             "Description 4"
         };
+        //display highlighted image details
+        nameLabel.setFont(new Font("Arial", Font.BOLD, 24));
+        descriptionLabel.setText(descriptions[i-1]);
+        descriptionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+
+        ImageIcon image = new ImageIcon();
         boolean isUnlocked = checkUnlock(i-1);
         if(isUnlocked)
         {
-            ImageIcon image = new ImageIcon("code\\brainboost\\imgs\\" + i + ".png");
-            Image imageScaled = image.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
-            ImageIcon scaledIcon = new ImageIcon(imageScaled);
-
-            imageLabel.setIcon(scaledIcon);
+            image = new ImageIcon("code\\brainboost\\imgs\\" + i + ".png");
             nameLabel.setText(names[i-1]);
-            descriptionLabel.setText(descriptions[i-1]);
-            statusLabel.setText("Unlocked!");
         }
         else
         {
-
-            ImageIcon image = new ImageIcon("code\\brainboost\\imgs\\locked.jpg");
-            Image imageScaled = image.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
-            ImageIcon scaledIcon = new ImageIcon(imageScaled);
-
-            imageLabel.setIcon(scaledIcon);
-            nameLabel.setText(names[i-1]);
-            descriptionLabel.setText(descriptions[i-1]);
-            statusLabel.setText("Locked!");
+            image = new ImageIcon("code\\brainboost\\imgs\\locked.jpg");
+            nameLabel.setText("Locked");
         }
+        Image imageScaled = image.getImage().getScaledInstance(300, 300, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(imageScaled);
+        imageLabel.setIcon(scaledIcon);
     }
     private boolean checkUnlock(int i)
     {
@@ -130,6 +131,6 @@ public class AchievementsFrame extends JFrame
         //        return false;
         //    }
         //}
-        return i != 1;
+        return i != 2;//testing when achievement 3 is locked
     }
 }
