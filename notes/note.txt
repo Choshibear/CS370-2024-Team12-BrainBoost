@@ -1,1 +1,7 @@
 note
+----------------------------------------------------------------------------------------
+Leo 10/9/2024 2:30am
+When building the achievements GUI i had an idea to implemtent a boolean array named isUnlocked for the User Class, checks the index of the array correlating to the index of the achievement. 
+  boolean[] isUnlocked = {false,false,true,false}. 
+  will research more later for better method.
+-----------------------------------------------------------------------------------------
