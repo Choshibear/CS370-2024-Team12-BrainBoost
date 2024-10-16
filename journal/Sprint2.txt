@@ -1,0 +1,7 @@
+Sprint 2 Meeting
+Date:10/16/2024 12:40am
+Attendees:Leonardo Cruz, Connor Toro, Ryker Rainwater
+
+Summary:
+  The purpose of Sprint 1 was the conception and design of the system along with some GUI research and implementation, 
+  for Sprint 2, we will continue building our GUI enviroment as well as begin researching and building the database for the Users and Quizzes.
