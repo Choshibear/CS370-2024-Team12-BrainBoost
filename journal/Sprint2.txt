@@ -1,6 +1,7 @@
 Sprint 2 Meeting
-Date:10/16/2024 12:40am
+Date:10/16/2024 12:30am
 Attendees:Leonardo Cruz, Connor Toro, Ryker Rainwater
+Meeting Duration: 10 minutes
 
 Summary:
   The purpose of Sprint 1 was the conception and design of the system along with some GUI research and implementation, 
