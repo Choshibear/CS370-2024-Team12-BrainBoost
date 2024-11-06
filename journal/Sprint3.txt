@@ -1,0 +1,11 @@
+Sprint 3 Meeting
+Date:11/6/2024 12:30pm
+Attendees:Leonardo Cruz, Connor Toro, Ryker Rainwater
+Meeting Duration: 10 minutes
+
+Summary:
+  During the duration of our Sprint 2 we largely focused on the restructured design of our system into a Client-Server model,
+  mostly working on the documentation, soon be revised and updated to properly reflect our current projects model.
+
+  Sprint 3 will have us placing more hands onto the server side and effectively communicating the sender and getter methods that can
+  effectively communicate between the clients user interface and the servers database.
