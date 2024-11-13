@@ -16,7 +16,7 @@ public class LoginFrame extends JFrame {
         // Title Panel
         JPanel titlePanel = new JPanel();
         JLabel title = new JLabel("BrainBoost");
-        title.setFont(new Font("Arial", Font.BOLD, 32)); // Make title bigger
+        title.setFont(new Font("Arial", Font.BOLD, 32)); 
         titlePanel.add(title);
         
         // Form Panel
@@ -24,11 +24,11 @@ public class LoginFrame extends JFrame {
         formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
         formPanel.setBorder(BorderFactory.createEmptyBorder(120, 300, 120, 300));
         JLabel userLabel = new JLabel("Username:");
-        JTextField userTextField = new JTextField(20);
+        JTextField usernameField = new JTextField(20);
         JLabel passwordLabel = new JLabel("Password:");
-        JPasswordField passwordField = new JPasswordField(20);
+        JTextField passwordField = new JPasswordField(20);
         formPanel.add(userLabel);
-        formPanel.add(userTextField);
+        formPanel.add(usernameField);
         formPanel.add(passwordLabel);
         formPanel.add(passwordField);
         
@@ -37,8 +37,8 @@ public class LoginFrame extends JFrame {
         JButton loginButton = new JButton("Login");
         JButton registerButton = new JButton("Register");
 
-        loginButton.addActionListener(e -> login());
-        registerButton.addActionListener(e -> register());
+        loginButton.addActionListener(e -> login(usernameField.getText(), passwordField.getText()));
+        registerButton.addActionListener(e -> register(usernameField.getText(), passwordField.getText()));
 
         buttonPanel.add(loginButton);
         buttonPanel.add(Box.createRigidArea(new Dimension(10, 0))); 
@@ -56,12 +56,13 @@ public class LoginFrame extends JFrame {
         add(mainPanel);
     }
 
-    public void login() {
+    public void login(String username, String password) {
       //login logic
-      System.out.println("Loggin in...");
+      System.out.println(username + " " + password);
     }
 
-    public void register() {
+    public void register(String username, String password) {
       //register logic
+      System.out.println(username + " " + password);
     }
 }
