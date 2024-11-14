@@ -1,0 +1,9 @@
+Sprint 4 Meeting
+Date:11/13/2024 12:30pm
+Attendees:Leonardo Cruz, Connor Toro, Ryker Rainwater
+Meeting Duration: 10 minutes
+
+Summary:
+We held an online meeting to touch base on our progress, we have made progress on our server implementation as well as some basic communication between the server and client. We are continuing to implement the GUI so that there can be more concrete work done between the server and client, and we will continue to finish implementing this code for sprint 4. 
+
+As sprint 4 continues we will continue approach a more cohesive and finalized code, any changes in the structure of the code will be reflected in revisions in our design documents. We will continue to update and share our progress until the end of the sprint, any of the remaining necessities in the code will be the focus of sprint 5.
