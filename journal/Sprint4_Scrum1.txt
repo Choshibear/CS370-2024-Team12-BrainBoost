@@ -1,0 +1,7 @@
+Sprint 4 Scrum Meeting 1
+Date:11/13/2024 12:30pm
+Attendees:Leonardo Cruz, Connor Toro, Ryker Rainwater
+Meeting Duration: 5 minutes
+
+Summary:
+We specified more on the design for the Quiz frame GUI for our Brainboost program. We discussed options for our future designs between how the main implementation for the user interface will refresh its pages between each new page that will be accessing information from the server. For now we settled that we may use loops and repeated calls for GUI frames using new information from the server after each call, but we will revise this as we get closer to implementing this code.
