@@ -1,0 +1,7 @@
+Sprint 4 Scrum Meeting 1
+Date:11/18/2024 12:30pm
+Attendees:Leonardo Cruz, Connor Toro, Ryker Rainwater
+Meeting Duration: 5 minutes
+
+Summary:
+For today's meeting we generally reviewed the progress on the new addition to our code and where we will be going from here. The GUI for the code is more or less complete at this point, and we will add any changes needed as we progress through the server and testing as needed. Our current focus now will be adding in more functionality and workability between the GUI of the software and the server support so that the program can functionally work.
