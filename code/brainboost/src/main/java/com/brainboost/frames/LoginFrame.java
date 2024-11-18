@@ -1,68 +1,104 @@
 package com.brainboost.frames;
 
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Dimension;
+import java.awt.Font;
+
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+import com.brainboost.ServerAPI;
 //import java.awt.event.*;
 
-public class LoginFrame extends JFrame {
-    public LoginFrame() {
+public class LoginFrame extends JPanel {
+  public LoginFrame(JFrame frame) {
+    // Title Panel
+    JPanel titlePanel = new JPanel();
+    JLabel title = new JLabel("BrainBoost");
+    title.setFont(new Font("Arial", Font.BOLD, 32)); 
+    titlePanel.add(title);
+    
+    // Form Panel
+    JPanel formPanel = new JPanel();
+    formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
+    formPanel.setBorder(BorderFactory.createEmptyBorder(120, 300, 120, 300));
+    JLabel userLabel = new JLabel("Username:");
+    JTextField usernameField = new JTextField(20);
+    JLabel passwordLabel = new JLabel("Password:");
+    JTextField passwordField = new JPasswordField(20);
+    formPanel.add(userLabel);
+    formPanel.add(usernameField);
+    formPanel.add(passwordLabel);
+    formPanel.add(passwordField);
+    
+    // Button Panel
+    JPanel buttonPanel = new JPanel();
+    JButton loginButton = new JButton("Login");
+    JButton registerButton = new JButton("Register");
 
-        setTitle("BrainBoost");
-        setSize(1000, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+    //Button Logic
+    loginButton.addActionListener(e -> {
+        if(login(usernameField.getText(), passwordField.getText()))
+        {
+            System.out.println("Login successful");
+            frame.setContentPane(new MenuFrame(frame));
+            frame.revalidate();
+        }
+        else
+        {
+            System.out.println("Invalid username or password");
+        }
+    });
+    registerButton.addActionListener(e -> {
+        register(usernameField.getText(), passwordField.getText()); //call register method
+    });
+    buttonPanel.add(loginButton);
+    buttonPanel.add(Box.createRigidArea(new Dimension(10, 0))); 
+    buttonPanel.add(registerButton);
+    
+    // Panelception
+    JPanel mainPanel = new JPanel();
+    mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+    mainPanel.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0)); 
+    mainPanel.add(titlePanel);
+    mainPanel.add(Box.createRigidArea(new Dimension(0, 30))); 
+    mainPanel.add(formPanel);
+    mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+    mainPanel.add(buttonPanel);
+    add(mainPanel);
+  }
 
-        // Title Panel
-        JPanel titlePanel = new JPanel();
-        JLabel title = new JLabel("BrainBoost");
-        title.setFont(new Font("Arial", Font.BOLD, 32)); 
-        titlePanel.add(title);
-        
-        // Form Panel
-        JPanel formPanel = new JPanel();
-        formPanel.setLayout(new BoxLayout(formPanel, BoxLayout.Y_AXIS));
-        formPanel.setBorder(BorderFactory.createEmptyBorder(120, 300, 120, 300));
-        JLabel userLabel = new JLabel("Username:");
-        JTextField usernameField = new JTextField(20);
-        JLabel passwordLabel = new JLabel("Password:");
-        JTextField passwordField = new JPasswordField(20);
-        formPanel.add(userLabel);
-        formPanel.add(usernameField);
-        formPanel.add(passwordLabel);
-        formPanel.add(passwordField);
-        
-        // Button Panel
-        JPanel buttonPanel = new JPanel();
-        JButton loginButton = new JButton("Login");
-        JButton registerButton = new JButton("Register");
-
-        loginButton.addActionListener(e -> login(usernameField.getText(), passwordField.getText()));
-        registerButton.addActionListener(e -> register(usernameField.getText(), passwordField.getText()));
-
-        buttonPanel.add(loginButton);
-        buttonPanel.add(Box.createRigidArea(new Dimension(10, 0))); 
-        buttonPanel.add(registerButton);
-        
-        // Panelception
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(50, 0, 50, 0)); 
-        mainPanel.add(titlePanel);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 30))); 
-        mainPanel.add(formPanel);
-        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
-        mainPanel.add(buttonPanel);
-        add(mainPanel);
-    }
-
-    public void login(String username, String password) {
+  public boolean  login(String username, String password) {
       //login logic
-      System.out.println(username + " " + password);
-    }
+      try {    
+        return ServerAPI.sendMessage("checkUser," + username + "," + password).equals("true");
+      } catch (Exception ex) {
+        System.out.println("Error logging in: " + ex.getMessage());
+        return false;
+      }
+  }
 
-    public void register(String username, String password) {
-      //register logic
-      System.out.println(username + " " + password);
+  public void register(String username, String password) {
+    //register logic
+    //login logic
+    try {    
+      if(ServerAPI.sendMessage("register," + username + "," + password).equals("true"))
+      {
+          System.out.println("Registered new user: " + username);
+      }
+      else
+      {
+          System.out.println("Username already exists");
+      } 
+    } catch (Exception ex) {
+      System.out.println("Error logging in: " + ex.getMessage());
     }
+  }
 }
