@@ -1,18 +1,18 @@
 package com.brainboost.frames;
 
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.Font;
 
-import java.awt.*;
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
-public class QuizFrame extends JFrame {
-
-    public QuizFrame(){
-
-        setTitle("Quiz");
-        setSize(1000, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-
+public class QuizFrame extends JPanel{
+    public QuizFrame(JFrame previousPanel){
          //Quiz Title Panel
          JPanel titlePanel = new JPanel();
          JLabel title = new JLabel("BrainBoost Quiz: Test");
@@ -49,6 +49,15 @@ public class QuizFrame extends JFrame {
         buttonPanel.add(DButton);
         buttonPanel.add(Box.createRigidArea(new Dimension(10, 0))); 
 
+        //return to menu
+        JPanel returnPanel = new JPanel();
+        JButton returnButton = new JButton("Return to Menu");
+        returnButton.addActionListener(e -> {
+            previousPanel.setContentPane(new MenuFrame(previousPanel));
+            previousPanel.revalidate();
+        });
+        returnPanel.add(returnButton);
+
         //Main display panel
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
@@ -59,6 +68,8 @@ public class QuizFrame extends JFrame {
         mainPanel.add(answerPanel);
         mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
         mainPanel.add(buttonPanel);
+        mainPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+        mainPanel.add(returnPanel);
         add(mainPanel);
     }
 }
