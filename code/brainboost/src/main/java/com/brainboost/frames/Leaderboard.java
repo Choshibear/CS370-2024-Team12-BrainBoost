@@ -1,12 +1,20 @@
 package com.brainboost.frames;
 
-import javax.swing.*;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
 
-import java.awt.*;
-
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-public class Leaderboard extends JFrame
+//CONNECT TO ATTEMPTS DB!!
+public class Leaderboard extends JPanel
 {
     private JButton firstButton, previousButton, nextButton, lastButton, moreButton;//buttons for navigating pages
     private JButton[] pageButtons;//buttons for pages
@@ -15,18 +23,12 @@ public class Leaderboard extends JFrame
     private int currentPage = 0;//start at page 1 or index 0
     private int tableRows = 10;//number of rows in table
     private int tableColumns = 3;//number of columns in table
-    private int totalRows = 100;//total number of rows in database(testing 100 rows)
+    private int totalRows = 100;//total number of rows in database(testing 100 rows) RECONNECT TO ATTEMOPTS DB SIZE
     private int totalPages;//total number of pages from total rows
     private int currentPagesGroup = 0;//current buttons displaying the pages of the group, ex buttons1,2,3,4 is group 1,and buttons 5,6,7,8 is group 2
 
-    public Leaderboard()
+    public Leaderboard(JFrame previousFrame)
     {
-        //window frame
-        setTitle("Leaderboard");
-        setSize(1000, 600);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
-
         // title panel
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20));
@@ -37,13 +39,13 @@ public class Leaderboard extends JFrame
         //leaderboard panel 
         JPanel leaderboardPanel = new JPanel();
         leaderboardPanel.setLayout(new BoxLayout(leaderboardPanel, BoxLayout.Y_AXIS));
-        leaderboardPanel.setBorder(BorderFactory.createEmptyBorder(120, 300, 120, 300));
 
-        //init table for leaderboard
+        //table for leaderboard
         tableModel = new DefaultTableModel();//
         tableModel.setColumnIdentifiers(new String[]{"ID","Name", "Score"});
         table = new JTable(tableModel);
         table.setRowHeight(30);
+
         leaderboardPanel.add(new JScrollPane(table));
         
         totalPages = (int) Math.ceil((double) totalRows / (double) tableRows); //calaulate total number of pages
@@ -84,13 +86,23 @@ public class Leaderboard extends JFrame
         buttonsPanel.add(moreButton);
         buttonsPanel.add(nextButton);
         buttonsPanel.add(lastButton);
-        
+
+         //return to menu button
+        JPanel returnMenuPanel = new JPanel();
+        JButton returnToMenuButton = new JButton("Return to Menu");
+        returnToMenuButton.addActionListener(e -> {
+            previousFrame.setContentPane(new MenuFrame(previousFrame));
+            previousFrame.revalidate();
+        });
+        returnMenuPanel.add(returnToMenuButton);
+
         //main panel
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.add(titlePanel);
         mainPanel.add(leaderboardPanel);
         mainPanel.add(buttonsPanel);
+        mainPanel.add(returnMenuPanel);
         add(mainPanel);
     }
 
@@ -115,6 +127,8 @@ public class Leaderboard extends JFrame
             row[2] = 100;
             tableModel.addRow(row);
         }
+        Dimension d = table.getPreferredSize();
+        table.setPreferredScrollableViewportSize(d);
         updatePageButtons();
     }
 
