@@ -1,0 +1,7 @@
+Sprint 4 Scrum Meeting 1
+Date:11/20/2024 12:30pm
+Attendees:Leonardo Cruz, Connor Toro, Ryker Rainwater
+Meeting Duration: 5 minutes
+
+Summary:
+We touched up on some of the contents and additions we need to make to the database side of our project and reviewed our previous work on the GUI frames. Looking forward we began some basic revision and future plans for additions to the final documentation we will have completed by the end of the semester. Today's meeting was more of a review for our previous work and a meeting to reestablish our future steps to complete our project on time.
