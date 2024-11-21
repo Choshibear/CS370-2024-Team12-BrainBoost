@@ -14,12 +14,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.brainboost.User;
 
 public class AchievementsFrame extends JPanel
 {
     private JLabel imageLabel, nameLabel, descriptionLabel;
 
-    public AchievementsFrame(JFrame previousFrame)
+    public AchievementsFrame(JFrame previousFrame,User user)
     {
         // title panel
         JPanel titlePanel = new JPanel();
@@ -82,7 +83,7 @@ public class AchievementsFrame extends JPanel
         JButton returnButton = new JButton("Return");
         returnButton.setFont(new Font("Arial", Font.BOLD, 24));
         returnButton.addActionListener(e -> {
-            previousFrame.setContentPane(new MenuFrame(previousFrame));
+            previousFrame.setContentPane(new MenuFrame(previousFrame, user));
             previousFrame.revalidate();
         });
         returnPanel.add(returnButton);

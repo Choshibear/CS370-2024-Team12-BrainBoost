@@ -10,13 +10,15 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.brainboost.User;
+
 public class MenuFrame extends JPanel{
-    public MenuFrame(JFrame previousFrame)
+    public MenuFrame(JFrame previousFrame, User user)
     {
         // title panel
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20));
-        JLabel title = new JLabel("Welcome to BrainBoost!");
+        JLabel title = new JLabel("Welcome to BrainBoost "+user.getUsername()+"!");
         title.setFont(new Font("Arial", Font.BOLD, 32));
         titlePanel.add(title);
 
@@ -45,18 +47,18 @@ public class MenuFrame extends JPanel{
         //Button listeners
         QuizButton.addActionListener(e -> {
             System.out.println("Quiz Button Clicked");
-            previousFrame.setContentPane(new QuizFrame(previousFrame));
+            previousFrame.setContentPane(new QuizFrame(previousFrame, user));
             previousFrame.revalidate();
 
         });
         LeaderboardButton.addActionListener(e -> {
             System.out.println("Leaderboard Button Clicked");
-            previousFrame.setContentPane(new Leaderboard(previousFrame));
+            previousFrame.setContentPane(new Leaderboard(previousFrame,user));
             previousFrame.revalidate();
         });
         AchievementsButton.addActionListener(e -> {
             System.out.println("Achievements Button Clicked");
-            previousFrame.setContentPane(new AchievementsFrame(previousFrame));
+            previousFrame.setContentPane(new AchievementsFrame(previousFrame,user));
             previousFrame.revalidate();
         });
         LogoutButton.addActionListener(e -> {

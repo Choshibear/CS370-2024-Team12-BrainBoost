@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import com.brainboost.User;
 //CONNECT TO ATTEMPTS DB!!
 public class Leaderboard extends JPanel
 {
@@ -23,11 +24,11 @@ public class Leaderboard extends JPanel
     private int currentPage = 0;//start at page 1 or index 0
     private int tableRows = 10;//number of rows in table
     private int tableColumns = 3;//number of columns in table
-    private int totalRows = 100;//total number of rows in database(testing 100 rows) RECONNECT TO ATTEMOPTS DB SIZE
+    private int totalRows = 100;//total number of rows in database(testing 100 rows) RECONNECT TO ATTEMPTS DB SIZE
     private int totalPages;//total number of pages from total rows
     private int currentPagesGroup = 0;//current buttons displaying the pages of the group, ex buttons1,2,3,4 is group 1,and buttons 5,6,7,8 is group 2
 
-    public Leaderboard(JFrame previousFrame)
+    public Leaderboard(JFrame previousFrame, User user)
     {
         // title panel
         JPanel titlePanel = new JPanel();
@@ -91,7 +92,7 @@ public class Leaderboard extends JPanel
         JPanel returnMenuPanel = new JPanel();
         JButton returnToMenuButton = new JButton("Return to Menu");
         returnToMenuButton.addActionListener(e -> {
-            previousFrame.setContentPane(new MenuFrame(previousFrame));
+            previousFrame.setContentPane(new MenuFrame(previousFrame,user));
             previousFrame.revalidate();
         });
         returnMenuPanel.add(returnToMenuButton);
@@ -122,9 +123,9 @@ public class Leaderboard extends JPanel
         for(int i = start; i < end; i++)
         {
             Object[] row = new Object[tableColumns];
-            row[0] = i;
-            row[1] = "Name";
-            row[2] = 100;
+            row[0] = i; //auto increment
+            row[1] = "Name";    //user ID
+            row[2] = 100;   //score
             tableModel.addRow(row);
         }
         Dimension d = table.getPreferredSize();

@@ -11,8 +11,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.brainboost.User;
 public class QuizFrame extends JPanel{
-    public QuizFrame(JFrame previousPanel){
+    public QuizFrame(JFrame previousPanel,User user) {
          //Quiz Title Panel
          JPanel titlePanel = new JPanel();
          JLabel title = new JLabel("BrainBoost Quiz: Test");
@@ -53,7 +54,7 @@ public class QuizFrame extends JPanel{
         JPanel returnPanel = new JPanel();
         JButton returnButton = new JButton("Return to Menu");
         returnButton.addActionListener(e -> {
-            previousPanel.setContentPane(new MenuFrame(previousPanel));
+            previousPanel.setContentPane(new MenuFrame(previousPanel,user));
             previousPanel.revalidate();
         });
         returnPanel.add(returnButton);

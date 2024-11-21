@@ -15,6 +15,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 import com.brainboost.ServerAPI;
+import com.brainboost.User;
 //import java.awt.event.*;
 
 public class LoginFrame extends JPanel {
@@ -45,19 +46,21 @@ public class LoginFrame extends JPanel {
 
     //Button Logic
     loginButton.addActionListener(e -> {
-        if(login(usernameField.getText(), passwordField.getText()))
-        {
-            System.out.println("Login successful");
-            frame.setContentPane(new MenuFrame(frame));
-            frame.revalidate();
-        }
-        else
-        {
-            System.out.println("Invalid username or password");
-        }
+      User user = new User(usernameField.getText(), passwordField.getText());
+      if(login(user))
+      {
+        System.out.println("Login successful");
+        frame.setContentPane(new MenuFrame(frame,user));
+        frame.revalidate();
+      }
+      else
+      {
+        System.out.println("Invalid username or password");
+      }
     });
     registerButton.addActionListener(e -> {
-        register(usernameField.getText(), passwordField.getText()); //call register method
+        User user = new User(usernameField.getText(), passwordField.getText());
+        register(user); //call register method
     });
     buttonPanel.add(loginButton);
     buttonPanel.add(Box.createRigidArea(new Dimension(10, 0))); 
@@ -75,23 +78,22 @@ public class LoginFrame extends JPanel {
     add(mainPanel);
   }
 
-  public boolean  login(String username, String password) {
+  public boolean login(User user) {
       //login logic
       try {    
-        return ServerAPI.sendMessage("checkUser," + username + "," + password).equals("true");
+        return ServerAPI.sendMessage("checkUser," + user.getUsername() + "," + user.getPassword()).equals("true");
       } catch (Exception ex) {
         System.out.println("Error logging in: " + ex.getMessage());
         return false;
       }
   }
 
-  public void register(String username, String password) {
+  public void register(User user) {
     //register logic
-    //login logic
     try {    
-      if(ServerAPI.sendMessage("register," + username + "," + password).equals("true"))
+      if(ServerAPI.sendMessage("registerUser," + user.getUsername() + "," + user.getPassword()).equals("true"))
       {
-          System.out.println("Registered new user: " + username);
+          System.out.println("Registered new user: " + user.getUsername());
       }
       else
       {
