@@ -1,5 +1,10 @@
 package com.brainboost;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class AttemptDB {
     private static final String DB_URL = "jdbc:sqlite:attempts.db";
@@ -16,36 +21,37 @@ public class AttemptDB {
             //CREATE TABLES
             stmt.execute("CREATE TABLE IF NOT EXISTS attempts (" +
                         "quiz_id INTEGER PRIMARY KEY REFERENCES quizzes(id)," +
-                        "userID INTEGER NOT NULL REFERENCES users(id)," +
-                        "score INTEGER NOT NULL,");
+                        "user TEXT NOT NULL REFERENCES users(username)," +
+                        "score INTEGER NOT NULL)");
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
     //adds an attempt
-    public String addAttempt(int quiz_id, int userID, int score){
+    public String addAttempt(int quiz_id, String user, int score){
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
-            Statement stmt = conn.createStatement();
-            String sql = String.format(
-                "INSERT INTO attempts (quiz_id, userID, score) " +
-                "VALUES ('%d', '%d', '%d')",
-                quiz_id, userID, score
-            );
-            stmt.executeUpdate(sql);
-            return "Added attempt";
+            //added prepared statement for security
+            String sql = "INSERT INTO attempts (quiz_id, user, score) VALUES (?, ?, ?)";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, quiz_id);
+                pstmt.setString(2, user); // Change user to String
+                pstmt.setInt(3, score);
+                pstmt.executeUpdate();
+                return "Added attempt";
+}
         } catch (SQLException e) {
             e.printStackTrace();
             return "Failed to add attempt";
         }
     }
     //updates the score for the attempt found given the quiz id and user id
-    public String updateAttempt(int quiz_id, int userID, int score){
+    public String updateAttempt(int quiz_id, String user, int score){
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
             Statement stmt = conn.createStatement();
             String sql = String.format(
-                "UPDATE attempts SET score = '%d' WHERE quiz_id = '%d' AND userID = '%d'",
-                score, quiz_id, userID
+                "UPDATE attempts SET score = '%d' WHERE quiz_id = '%d' AND user = '%s'",
+                score, quiz_id, user
             );
             stmt.executeUpdate(sql);
             return "Updated attempt";
@@ -55,12 +61,12 @@ public class AttemptDB {
         }
     }
     //returns the score for the attempt found given the quiz id and user id as a string
-    public String getAttempt(int quiz_id, int userID){
+    public String getAttempt(int quiz_id, String user){
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(
                 "SELECT score " +
-                "FROM attempts WHERE userID = " + userID + " AND quiz_id = " + quiz_id
+                "FROM attempts WHERE user = " + user + " AND quiz_id = " + quiz_id
             );
             if (rs.next()) {
                 return String.format("%d", rs.getInt("score"));
@@ -80,18 +86,12 @@ public class AttemptDB {
                 "SELECT * " +
                 "FROM attempts WHERE quiz_id = " + quiz_id
             );
-            //if no attempts found
-            if (!rs.next()) {
-                return "Could not find attempts";
+            String leaderboard = "";
+            while (rs.next()) {
+                leaderboard += String.format("%s,%d\n", rs.getString("user"), rs.getInt("score"));
             }
-            //if attempts found
-            else{
-                String leaderboard = "";
-                while (rs.next()) {
-                    leaderboard += String.format("%d, %d\n", rs.getInt("userID"), rs.getInt("score"));
-                }
-                return leaderboard;
-            }
+            //if empoty, return "no attempts found" else return leaderboard as a string
+            return leaderboard.isEmpty() ? "no attempts found" : leaderboard;
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
