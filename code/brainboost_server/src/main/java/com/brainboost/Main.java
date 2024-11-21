@@ -10,7 +10,6 @@ public class Main
     public static void main(String[] args) {
         // System.out.println(quizzes.getQuiz(1));
         // System.out.println(questions.getQuestion(1));
-
         try (ServerSocket serverSocket = new ServerSocket(12345)) { 
             System.out.println("Server is listening...");
 
@@ -38,9 +37,7 @@ public class Main
         UserDB users = new UserDB();
         QuestionDB questions = new QuestionDB();
         QuizDB quizzes = new QuizDB();
-        // Register, CheckUser
-        // getQuiz, getQuestion
-        // getAttempts, getAttempt
+        AttemptDB attempts = new AttemptDB();
 
         String[] req = message.split(",");
         switch(req[0]){
@@ -52,6 +49,14 @@ public class Main
                 return quizzes.getQuiz(Integer.parseInt(req[1]));
             case "getQuestion":
                 return questions.getQuestion(Integer.parseInt(req[1]));
+            case "addAttempt":
+                return attempts.addAttempt(Integer.parseInt(req[1]), req[2], Integer.parseInt(req[3]));
+            case "updateAttempt":
+                return attempts.updateAttempt(Integer.parseInt(req[1]), req[2], Integer.parseInt(req[3]));
+            case "getAttempt":
+                return attempts.getAttempt(Integer.parseInt(req[1]), req[2]);
+            case "printLeaderboard":
+                return attempts.printLeaderboard(Integer.parseInt(req[1]));
             default:
                 return "false";
         }
