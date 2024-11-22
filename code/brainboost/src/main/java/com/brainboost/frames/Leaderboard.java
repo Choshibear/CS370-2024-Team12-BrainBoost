@@ -13,23 +13,28 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
+import com.brainboost.ServerAPI;
 import com.brainboost.User;
-//CONNECT TO ATTEMPTS DB!!
+
 public class Leaderboard extends JPanel
 {
-    private JButton firstButton, previousButton, nextButton, lastButton, moreButton;//buttons for navigating pages
-    private JButton[] pageButtons;//buttons for pages
-    private JTable table;
-    private DefaultTableModel tableModel;//manager for table data
+    private final JButton firstButton, previousButton, nextButton, lastButton, moreButton;//buttons for navigating pages
+    private final JButton[] pageButtons;//buttons for pages
+    private final JTable table;
+    private final DefaultTableModel tableModel;//manager for table data
     private int currentPage = 0;//start at page 1 or index 0
-    private int tableRows = 10;//number of rows in table
-    private int tableColumns = 3;//number of columns in table
-    private int totalRows = 100;//total number of rows in database(testing 100 rows) RECONNECT TO ATTEMPTS DB SIZE
+    private final int tableRows = 10;//number of rows per page in the table
+    private final int tableColumns = 3;//number of columns in table
+
+    private String[] leaderboardArray;//array of data from attempts db
+    private int totalRows;//total number of rows in table
     private int totalPages;//total number of pages from total rows
+
     private int currentPagesGroup = 0;//current buttons displaying the pages of the group, ex buttons1,2,3,4 is group 1,and buttons 5,6,7,8 is group 2
 
-    public Leaderboard(JFrame previousFrame, User user)
+    public Leaderboard(JFrame previousFrame, User user, int quiz_id)
     {
+        getLeaderboard(quiz_id);//get leaderboard values
         // title panel
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20));
@@ -43,13 +48,11 @@ public class Leaderboard extends JPanel
 
         //table for leaderboard
         tableModel = new DefaultTableModel();//
-        tableModel.setColumnIdentifiers(new String[]{"ID","Name", "Score"});
+        tableModel.setColumnIdentifiers(new String[]{"Place","Name", "Score"});
         table = new JTable(tableModel);
         table.setRowHeight(30);
 
         leaderboardPanel.add(new JScrollPane(table));
-        
-        totalPages = (int) Math.ceil((double) totalRows / (double) tableRows); //calaulate total number of pages
 
         //Buttons panel
         JPanel buttonsPanel = new JPanel();
@@ -106,7 +109,7 @@ public class Leaderboard extends JPanel
         mainPanel.add(returnMenuPanel);
         add(mainPanel);
     }
-
+    //loads the leaderboard data for the current page
     private void loadPage(int page)
     {
         //out of bounds
@@ -120,19 +123,25 @@ public class Leaderboard extends JPanel
         //load new data
         int start = page * tableRows;//start index of table
         int end = Math.min(start + tableRows, totalRows);//Math min chooses the smaller value if either the total rows is smaller than the number of table rows for the current page
+        
+
+        //CHECK FOR ERROR DURING TESTING!!!
         for(int i = start; i < end; i++)
         {
             Object[] row = new Object[tableColumns];
-            row[0] = i; //auto increment
-            row[1] = "Name";    //user ID
-            row[2] = 100;   //score
+            row[0] = i;
+            row[1] = leaderboardArray[i].split(",")[0];
+            row[2] = leaderboardArray[i].split(",")[1];
             tableModel.addRow(row);
         }
+        //CHECK FOR ERROR DURING TESTING!!!
+
         Dimension d = table.getPreferredSize();
         table.setPreferredScrollableViewportSize(d);
         updatePageButtons();
     }
 
+    //updates the gui's page buttons 
     private void updatePageButtons()
     {
         //update page buttons
@@ -156,6 +165,7 @@ public class Leaderboard extends JPanel
         nextButton.setEnabled(currentPage < totalPages - 1);
         lastButton.setEnabled(currentPage < totalPages - 1);
     }
+    //Move to the next group of pages. If the next page is outside the bounds of the total pages, loop back to the first page group. 
     private void loadNextPageGroup()
     {
         currentPagesGroup += pageButtons.length;
@@ -164,5 +174,19 @@ public class Leaderboard extends JPanel
             currentPagesGroup = 0;
         }
         updatePageButtons();
+    }
+    //gets the leaderboard data from server and updates the gui
+    private void getLeaderboard(int quiz_id)
+    {
+    try {
+        String leaderboard = ServerAPI.sendMessage("printLeaderboard," + quiz_id);
+        leaderboardArray = leaderboard.split("\n");
+        totalRows = leaderboardArray.length;
+        totalPages = (int) Math.ceil((double) totalRows / tableRows);
+        
+
+    } catch (Exception ex) {
+        System.out.println("Error getting leaderboard: " + ex.getMessage());
+    }
     }
 }
