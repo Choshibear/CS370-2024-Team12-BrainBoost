@@ -1,0 +1,7 @@
+Sprint 4 Scrum Meeting 1
+Date:11/22/2024 1:05pm
+Attendees:Leonardo Cruz, Connor Toro, Ryker Rainwater
+Meeting Duration: 5 minutes
+
+Summary:
+This meeting was a short recap for our progress in the program over the last sprint. We still have individual portions of work to complete to finalize the code to allow it to work all around, but this will be part of the week 5 sprint. Additionally, extra revision and the finalized documentation for the project will be implemented throughout sprint 5 as the program itself is finalized.
