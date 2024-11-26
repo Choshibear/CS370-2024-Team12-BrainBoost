@@ -41,7 +41,7 @@ public class Main
 
         String[] req = message.split(",");
         switch(req[0]){
-            case "register":
+            case "registerUser":
                 return users.addUser(req[1], req[2]);
             case "checkUser":
                 return users.checkUser(req[1], req[2]);
