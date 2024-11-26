@@ -32,9 +32,9 @@ public class Leaderboard extends JPanel
 
     private int currentPagesGroup = 0;//current buttons displaying the pages of the group, ex buttons1,2,3,4 is group 1,and buttons 5,6,7,8 is group 2
 
-    public Leaderboard(JFrame previousFrame, User user, int quiz_id)
+    public Leaderboard(JFrame previousFrame, User user)
     {
-        getLeaderboard(quiz_id);//get leaderboard values
+        getLeaderboard(user.getQuiz_id());//get leaderboard values from the quiz id the user is currently taking
         // title panel
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20));
