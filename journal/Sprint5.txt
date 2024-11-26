@@ -1,0 +1,9 @@
+Sprint 5
+Date:11/5/2024 12:45pm
+Attendees:Leonardo Cruz, Connor Toro, Ryker Rainwater
+Meeting Duration: 15 minutes
+
+Summary:
+We reviewed the portions of the remaining code we need to cover for this last sprint, and will be shifting most of our focus onto preparing to present our work and revise our documentation alongside finalizing our remaining code. This meeting marks the beginning of our fifth and final sprint, and we will be wrapping up all of the loose ends for the project over the next two weeks. 
+
+The remainder of our meeting time we spent reviewing and making sure the existing program functioned as intended before we continue to add code to it for the remainder of the project. The current program allows access to the frames of the program and navigation between the pages, as well as most of the database functioning and working as intended. Any changes as we continue to test and finish developing the program will be recorded by our testing cases.
