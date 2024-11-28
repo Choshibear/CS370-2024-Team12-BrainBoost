@@ -60,18 +60,20 @@ public class AttemptDB {
             return "Failed to update attempt";
         }
     }
-    //returns the score for the attempt found given the quiz id and user id as a string
+    //returns string if attempt found, else returns "no attempt found"
     public String getAttempt(int quiz_id, String user){
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(
-                "SELECT score " +
-                "FROM attempts WHERE user = " + user + " AND quiz_id = " + quiz_id
-            );
-            if (rs.next()) {
-                return String.format("%d", rs.getInt("score"));
+            String sql = "SELECT score FROM attempts WHERE user = ? AND quiz_id = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, user);  // Set the user parameter
+                pstmt.setInt(2, quiz_id);  // Set the quiz_id parameter
+   
+                ResultSet rs = pstmt.executeQuery();
+                if (rs.next()) {
+                    return String.format("%d", rs.getInt("score"));
+                }
+                return "no attempt found";
             }
-            return "no attempt found";
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

@@ -1,9 +1,9 @@
 package com.brainboost.frames;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,73 +13,64 @@ import javax.swing.JPanel;
 import com.brainboost.User;
 
 public class MenuFrame extends JPanel{
-    public MenuFrame(JFrame previousFrame, User user)
-    {
-        // title panel
+    //array of quizzes details
+    private String[] quizzes = {
+            "Math 1", "Math 2", 
+            "Science 1", "Science 2", 
+            "History 1", "History 2", 
+            "English 1", "English 2"
+        };
+
+    public MenuFrame(JFrame previousFrame, User user) {
+        // Title panel
         JPanel titlePanel = new JPanel();
-        titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20));
-        JLabel title = new JLabel("Welcome to BrainBoost "+user.getUsername()+"!");
+        titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
+        JLabel title = new JLabel("Welcome to BrainBoost " + user.getUsername() + "!");
         title.setFont(new Font("Arial", Font.BOLD, 32));
         titlePanel.add(title);
 
-        // menu panel
+        // Menu panel
         JPanel menuPanel = new JPanel();
-        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
-        menuPanel.setBorder(BorderFactory.createEmptyBorder(120, 300, 120, 300));
+        menuPanel.setLayout(new GridLayout(4, 2, 20, 20)); // 4 rows, 2 columns, spacing between
 
-        
-        JButton QuizButton = new JButton("Take a Quiz");
-        JButton AchievementsButton = new JButton("Achievements");
-        JButton LeaderboardButton = new JButton("Leaderboard");
-        JButton LogoutButton = new JButton("Logout");
-        //Button Font
-        QuizButton.setFont(new Font("Arial", Font.BOLD, 24));
-        AchievementsButton.setFont(new Font("Arial", Font.BOLD, 24));        
-        LeaderboardButton.setFont(new Font("Arial", Font.BOLD, 24));
-        LogoutButton.setFont(new Font("Arial", Font.BOLD, 24));
-        
-        //Button alignment
-        QuizButton.setAlignmentX(CENTER_ALIGNMENT);
-        LeaderboardButton.setAlignmentX(CENTER_ALIGNMENT);
-        AchievementsButton.setAlignmentX(CENTER_ALIGNMENT);
-        LogoutButton.setAlignmentX(CENTER_ALIGNMENT);
+        // Create buttons for each quiz
+        for (int i = 0; i < quizzes.length; i++) {
+            int quizID = i + 1;
+            JButton quizButton = new JButton(quizzes[i]);
+            quizButton.setFont(new Font("Arial", Font.BOLD, 20));
 
-        //Button listeners
-        QuizButton.addActionListener(e -> {
-            System.out.println("Quiz Button Clicked");
-            previousFrame.setContentPane(new QuizFrame(previousFrame, user));
-            previousFrame.revalidate();
+            // Add action listener to set quizID and navigate to QuizFrame
+            quizButton.addActionListener(e -> {
+                user.setQuiz_id(quizID);
+                System.out.println(quizzes[quizID - 1] + " selected. QuizID set to " + quizID);
+                previousFrame.setContentPane(new QuizFrame(previousFrame, user));
+                previousFrame.revalidate();
+            });
 
-        });
-        LeaderboardButton.addActionListener(e -> {
-            System.out.println("Leaderboard Button Clicked");
-            previousFrame.setContentPane(new Leaderboard(previousFrame,user));
-            previousFrame.revalidate();
-        });
-        AchievementsButton.addActionListener(e -> {
-            System.out.println("Achievements Button Clicked");
+            menuPanel.add(quizButton);
+        }
+
+        //Achievements panel
+        JPanel achievementsPanel = new JPanel();
+        achievementsPanel.setLayout(new BoxLayout(achievementsPanel, BoxLayout.Y_AXIS));
+        achievementsPanel.setBorder(BorderFactory.createEmptyBorder(50, 150, 50, 150));
+        JButton achievementsButton = new JButton("Achievements");
+        achievementsButton.setFont(new Font("Arial", Font.BOLD, 20));
+        achievementsButton.setAlignmentX(CENTER_ALIGNMENT);
+        achievementsButton.addActionListener(e -> {
             previousFrame.setContentPane(new AchievementsFrame(previousFrame,user));
             previousFrame.revalidate();
         });
-        LogoutButton.addActionListener(e -> {
-            System.out.println("Logout Button Clicked");
-            previousFrame.setContentPane(new LoginFrame(previousFrame));
-            previousFrame.revalidate();
-        });
-        //add buttons to main panel
-        menuPanel.add(QuizButton);
-        menuPanel.add(Box.createVerticalStrut(20));//Button padding
-        menuPanel.add(AchievementsButton);
-        menuPanel.add(Box.createVerticalStrut(20));//Button padding
-        menuPanel.add(LeaderboardButton);
-        menuPanel.add(Box.createVerticalStrut(20));//Button padding
-        menuPanel.add(LogoutButton);
+        achievementsPanel.add(achievementsButton);
 
-        // add panels to frame
+        
+        // Add panels to main frame
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
+        mainPanel.setLayout(new GridLayout(3, 1, 10, 20)); // Title on top, quizzes below
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
         mainPanel.add(titlePanel);
         mainPanel.add(menuPanel);
+        mainPanel.add(achievementsPanel);
         add(mainPanel);
     }
 }

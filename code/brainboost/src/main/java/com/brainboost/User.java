@@ -1,17 +1,20 @@
 package com.brainboost;
 public class User {
-    private String username;
-    private String password;
-    private int quiz_id;
+    private String username; //holds the username of the user
+    private String password; //holds the password of the user
+    private int quiz_id; //holds the id of the current quiz the user is taking
+    //constructor
     public User() {
         username = null;
         password = null;
         quiz_id = 0;
     }
+    //constructor after logging in
     public User(String username, String password) {
         this.username = username;
         this.password = password;
     }
+    //getters
     public String getUsername() {
         return username;
     }
@@ -21,6 +24,7 @@ public class User {
     public int getQuiz_id() {
         return quiz_id;
     }
+    //setters
     public void setUsername(String username) {
         this.username = username;
     }

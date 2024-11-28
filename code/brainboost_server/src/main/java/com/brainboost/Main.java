@@ -49,6 +49,8 @@ public class Main
                 return quizzes.getQuiz(Integer.parseInt(req[1]));
             case "getQuestion":
                 return questions.getQuestion(Integer.parseInt(req[1]));
+            case "getAnswer":
+                return questions.getAnswer(Integer.parseInt(req[1]));
             case "addAttempt":
                 return attempts.addAttempt(Integer.parseInt(req[1]), req[2], Integer.parseInt(req[3]));
             case "updateAttempt":
