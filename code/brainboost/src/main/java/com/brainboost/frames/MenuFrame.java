@@ -1,9 +1,9 @@
 package com.brainboost.frames;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -13,27 +13,51 @@ import javax.swing.JPanel;
 import com.brainboost.User;
 
 public class MenuFrame extends JPanel{
-    //array of quizzes details
-    private String[] quizzes = {
-            "Math 1", "Math 2", 
-            "Science 1", "Science 2", 
-            "History 1", "History 2", 
-            "English 1", "English 2"
-        };
-
+    private String state = "menu";
     public MenuFrame(JFrame previousFrame, User user) {
         // Title panel
         JPanel titlePanel = new JPanel();
-        titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
-        JLabel title = new JLabel("Welcome to BrainBoost " + user.getUsername() + "!");
+        titlePanel.setLayout(new BoxLayout(titlePanel, BoxLayout.Y_AXIS));
+        JLabel title = new JLabel("Welcome to BrainBoost " + user.getUsername().toUpperCase() + "!");
+        JLabel subtitle = new JLabel("Select an option below:");
         title.setFont(new Font("Arial", Font.BOLD, 32));
+        subtitle.setFont(new Font("Arial", Font.BOLD, 24));
+        title.setAlignmentX(CENTER_ALIGNMENT);
+        subtitle.setAlignmentX(CENTER_ALIGNMENT);
         titlePanel.add(title);
+        titlePanel.add(subtitle);
 
-        // Menu panel
+        // menu panel
         JPanel menuPanel = new JPanel();
-        menuPanel.setLayout(new GridLayout(4, 2, 20, 20)); // 4 rows, 2 columns, spacing between
+        menuPanel.setLayout(new BoxLayout(menuPanel, BoxLayout.Y_AXIS));
+        menuPanel.setBorder(BorderFactory.createEmptyBorder(20, 300, 20, 300));
+        
+        //Buttons
+        JButton QuizButton = new JButton("Take a Quiz");
+        JButton LeaderboardButton = new JButton("Leaderboards");
+        JButton AchievementsButton = new JButton("Achievements");
+        JButton LogoutButton = new JButton("Logout");
 
-        // Create buttons for each quiz
+        //Set Button Font
+        QuizButton.setFont(new Font("Arial", Font.BOLD, 24));
+        AchievementsButton.setFont(new Font("Arial", Font.BOLD, 24));        
+        LeaderboardButton.setFont(new Font("Arial", Font.BOLD, 24));
+        LogoutButton.setFont(new Font("Arial", Font.BOLD, 24));
+        
+
+
+        //Subjects panel
+        JPanel subjectsPanel = new JPanel();
+        subjectsPanel.setLayout(new GridLayout(4, 2, 20, 20)); // 4 rows, 2 columns, spacing between
+
+        //Subjects buttons
+        // Create buttons for each quiz//array of quizzes details
+        String[] quizzes = {
+        "Math 1", "Math 2", 
+        "Science 1", "Science 2", 
+        "History 1", "History 2", 
+        "English 1", "English 2"
+        };
         for (int i = 0; i < quizzes.length; i++) {
             int quizID = i + 1;
             JButton quizButton = new JButton(quizzes[i]);
@@ -43,34 +67,107 @@ public class MenuFrame extends JPanel{
             quizButton.addActionListener(e -> {
                 user.setQuiz_id(quizID);
                 System.out.println(quizzes[quizID - 1] + " selected. QuizID set to " + quizID);
+                if ("quiz".equals(state)) {
                 previousFrame.setContentPane(new QuizFrame(previousFrame, user));
                 previousFrame.revalidate();
+                }
+                if ("leaderboard".equals(state)) {
+                previousFrame.setContentPane(new Leaderboard(previousFrame, user));
+                previousFrame.revalidate();
+                }
             });
-
-            menuPanel.add(quizButton);
+            subjectsPanel.add(quizButton);
         }
+        //return to menu button from subjects panel
+        JButton returnToMenuButton = new JButton("Return to Menu");
+        returnToMenuButton.setFont(new Font("Arial", Font.BOLD, 24));
+        returnToMenuButton.addActionListener(e -> {
+            System.out.println("Return to Menu Button Clicked");
+            state = "menu";
+            subtitle.setText("Select an option below:");
+            subjectsPanel.setVisible(false);
+            subjectsPanel.setEnabled(false);
+            returnToMenuButton.setVisible(false);
+            returnToMenuButton.setEnabled(false);
+            QuizButton.setVisible(true);
+            QuizButton.setEnabled(true);
+            LeaderboardButton.setVisible(true);
+            LeaderboardButton.setEnabled(true);
 
-        //Achievements panel
-        JPanel achievementsPanel = new JPanel();
-        achievementsPanel.setLayout(new BoxLayout(achievementsPanel, BoxLayout.Y_AXIS));
-        achievementsPanel.setBorder(BorderFactory.createEmptyBorder(50, 150, 50, 150));
-        JButton achievementsButton = new JButton("Achievements");
-        achievementsButton.setFont(new Font("Arial", Font.BOLD, 20));
-        achievementsButton.setAlignmentX(CENTER_ALIGNMENT);
-        achievementsButton.addActionListener(e -> {
+        });        
+        
+        //Button alignment
+        QuizButton.setAlignmentX(CENTER_ALIGNMENT);
+        LeaderboardButton.setAlignmentX(CENTER_ALIGNMENT);
+        AchievementsButton.setAlignmentX(CENTER_ALIGNMENT);
+        LogoutButton.setAlignmentX(CENTER_ALIGNMENT);
+        returnToMenuButton.setAlignmentX(CENTER_ALIGNMENT);
+
+        //Menu Button listeners
+        QuizButton.addActionListener(e -> {
+            System.out.println("Quiz Button Clicked");
+            state = "quiz";
+            subtitle.setText("Select a quiz subject below:");
+            QuizButton.setVisible(false);
+            QuizButton.setEnabled(false);
+            LeaderboardButton.setVisible(false);
+            LeaderboardButton.setEnabled(false);
+            subjectsPanel.setVisible(true);
+            subjectsPanel.setEnabled(true);
+            returnToMenuButton.setVisible(true);
+            returnToMenuButton.setEnabled(true);
+            
+        });
+        LeaderboardButton.addActionListener(e -> {
+            System.out.println("Leaderboard Button Clicked");
+            state = "leaderboard";
+            subtitle.setText("Select the leaderboard for the subject below:");
+            QuizButton.setVisible(false);
+            QuizButton.setEnabled(false);
+            LeaderboardButton.setVisible(false);
+            LeaderboardButton.setEnabled(false);
+            subjectsPanel.setVisible(true);
+            subjectsPanel.setEnabled(true);
+            returnToMenuButton.setVisible(true);
+            returnToMenuButton.setEnabled(true);
+        });
+        AchievementsButton.addActionListener(e -> {
+            System.out.println("Achievements Button Clicked");
             previousFrame.setContentPane(new AchievementsFrame(previousFrame,user));
             previousFrame.revalidate();
         });
-        achievementsPanel.add(achievementsButton);
-
+        LogoutButton.addActionListener(e -> {
+            System.out.println("Logout Button Clicked");
+            user.logout();
+            previousFrame.setContentPane(new LoginFrame(previousFrame));
+            previousFrame.revalidate();
+        });
         
-        // Add panels to main frame
+        //add buttons to main panel
+        menuPanel.add(returnToMenuButton);
+        menuPanel.add(Box.createVerticalStrut(20));//Button padding
+        menuPanel.add(subjectsPanel);
+
+        //hide subjects panel until user selects a quiz or leaderboard
+        subjectsPanel.setVisible(false);
+        subjectsPanel.setEnabled(false);
+        returnToMenuButton.setVisible(false);
+        returnToMenuButton.setEnabled(false);
+
+        //add main menu buttons
+        menuPanel.add(QuizButton);
+        menuPanel.add(Box.createVerticalStrut(20));//Button padding
+        menuPanel.add(LeaderboardButton);
+        menuPanel.add(Box.createVerticalStrut(20));//Button padding
+        menuPanel.add(AchievementsButton);
+        menuPanel.add(Box.createVerticalStrut(20));//Button padding
+        menuPanel.add(LogoutButton);
+
+        // add panels to frame// add panels to frame
         JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayout(3, 1, 10, 20)); // Title on top, quizzes below
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(30, 30, 30, 30));
+        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.add(titlePanel);
         mainPanel.add(menuPanel);
-        mainPanel.add(achievementsPanel);
         add(mainPanel);
     }
 }
