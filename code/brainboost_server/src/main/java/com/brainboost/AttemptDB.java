@@ -20,9 +20,10 @@ public class AttemptDB {
             
             //CREATE TABLES
             stmt.execute("CREATE TABLE IF NOT EXISTS attempts (" +
-                        "quiz_id INTEGER PRIMARY KEY REFERENCES quizzes(id)," +
+                        "quiz_id INTEGER NOT NULL REFERENCES quizzes(id)," +
                         "user TEXT NOT NULL REFERENCES users(username)," +
-                        "score INTEGER NOT NULL)");
+                        "score INTEGER NOT NULL," +
+                        "PRIMARY KEY (quiz_id, user))");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -60,7 +61,7 @@ public class AttemptDB {
             return "Failed to update attempt";
         }
     }
-    //returns string if attempt found, else returns "no attempt found"
+    //returns the score for the attempt found given the quiz id and user, is used to determine if the user has already attempted the quiz and if score is higher,to update their score
     public String getAttempt(int quiz_id, String user){
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
             String sql = "SELECT score FROM attempts WHERE user = ? AND quiz_id = ?";
@@ -86,14 +87,20 @@ public class AttemptDB {
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery(
                 "SELECT * " +
-                "FROM attempts WHERE quiz_id = " + quiz_id
+                "FROM attempts WHERE quiz_id = '" + quiz_id + "' ORDER BY score DESC"
             );
             String leaderboard = "";
+            System.out.println("server query result for printLeaderboard: " + rs);
             while (rs.next()) {
-                leaderboard += String.format("%s,%d\n", rs.getString("user"), rs.getInt("score"));
+                leaderboard += rs.getString("user") + "," + rs.getString("score") + "/";
             }
+            System.out.println("current leaderboard to client: " + leaderboard);
             //if empoty, return "no attempts found" else return leaderboard as a string
-            return leaderboard.isEmpty() ? "no attempts found" : leaderboard;
+            if (leaderboard.equals("")) {
+                return "no attempts found";
+            } else {
+                return leaderboard;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

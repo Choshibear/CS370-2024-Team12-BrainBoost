@@ -35,8 +35,8 @@ public class User {
         this.quiz_id = quiz_id;
     }
     public void logout() {
-    username = null;
-    password = null;
-    quiz_id = 0;
+        username = null;
+        password = null;
+        quiz_id = 0;
     }
 }

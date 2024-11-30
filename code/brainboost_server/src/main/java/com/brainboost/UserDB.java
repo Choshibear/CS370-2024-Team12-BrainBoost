@@ -1,6 +1,11 @@
 package com.brainboost;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class UserDB {
     private static final String DB_URL = "jdbc:sqlite:users.db";
@@ -56,6 +61,7 @@ public class UserDB {
             ResultSet rs = pstmt.executeQuery();
 
             if(password.equals(rs.getString("password"))){
+                System.out.println("Validated user: " + username);
                 return "true";
             }
 

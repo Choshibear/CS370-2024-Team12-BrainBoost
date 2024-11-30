@@ -191,14 +191,14 @@ public class Leaderboard extends JPanel
         try
         {
             String leaderboard = ServerAPI.sendMessage("printLeaderboard," + quiz_id);
-            leaderboardArray = leaderboard.split("\n");
-
+            System.out.println("Raw Leaderboard data from server in the client: " + leaderboard);
+            leaderboardArray = leaderboard.split("/");
+            System.out.println("Leaderboard data processed: " + Arrays.toString(leaderboardArray));
             if (leaderboardArray.length == 0)
             {
                 System.out.println("No leaderboard data found.");
                 return;
             }
-            System.out.println("Leaderboard: " + Arrays.toString(leaderboardArray));
             totalRows = leaderboardArray.length;
             totalPages = (int) Math.ceil((double) totalRows / tableRows);
         }

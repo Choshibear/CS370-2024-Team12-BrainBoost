@@ -176,10 +176,8 @@ public class MenuFrame extends JPanel{
         menuPanel.add(LogoutButton);
 
         // add panels to frame// add panels to frame
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
-        mainPanel.add(titlePanel);
-        mainPanel.add(menuPanel);
-        add(mainPanel);
+       setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+       add(titlePanel);
+       add(menuPanel);
     }
 }
