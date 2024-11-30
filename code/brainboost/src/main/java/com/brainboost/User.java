@@ -34,4 +34,9 @@ public class User {
     public void setQuiz_id(int quiz_id) {
         this.quiz_id = quiz_id;
     }
+    public void logout() {
+    username = null;
+    password = null;
+    quiz_id = 0;
+    }
 }
