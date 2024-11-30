@@ -44,8 +44,6 @@ public class MenuFrame extends JPanel{
         LeaderboardButton.setFont(new Font("Arial", Font.BOLD, 24));
         LogoutButton.setFont(new Font("Arial", Font.BOLD, 24));
         
-
-
         //Subjects panel
         JPanel subjectsPanel = new JPanel();
         subjectsPanel.setLayout(new GridLayout(4, 2, 20, 20)); // 4 rows, 2 columns, spacing between
@@ -84,6 +82,7 @@ public class MenuFrame extends JPanel{
         returnToMenuButton.addActionListener(e -> {
             System.out.println("Return to Menu Button Clicked");
             state = "menu";
+            title.setVisible(true);
             subtitle.setText("Select an option below:");
             subjectsPanel.setVisible(false);
             subjectsPanel.setEnabled(false);
@@ -93,7 +92,10 @@ public class MenuFrame extends JPanel{
             QuizButton.setEnabled(true);
             LeaderboardButton.setVisible(true);
             LeaderboardButton.setEnabled(true);
-
+            AchievementsButton.setVisible(true);
+            AchievementsButton.setEnabled(true);
+            LogoutButton.setVisible(true);
+            LogoutButton.setEnabled(true);
         });        
         
         //Button alignment
@@ -108,6 +110,7 @@ public class MenuFrame extends JPanel{
             System.out.println("Quiz Button Clicked");
             state = "quiz";
             subtitle.setText("Select a quiz subject below:");
+            title.setVisible(false);
             QuizButton.setVisible(false);
             QuizButton.setEnabled(false);
             LeaderboardButton.setVisible(false);
@@ -116,11 +119,16 @@ public class MenuFrame extends JPanel{
             subjectsPanel.setEnabled(true);
             returnToMenuButton.setVisible(true);
             returnToMenuButton.setEnabled(true);
+            AchievementsButton.setVisible(false);
+            AchievementsButton.setEnabled(false);
+            LogoutButton.setVisible(false);
+            LogoutButton.setEnabled(false);
             
         });
         LeaderboardButton.addActionListener(e -> {
             System.out.println("Leaderboard Button Clicked");
             state = "leaderboard";
+            title.setVisible(false);
             subtitle.setText("Select the leaderboard for the subject below:");
             QuizButton.setVisible(false);
             QuizButton.setEnabled(false);
@@ -130,6 +138,10 @@ public class MenuFrame extends JPanel{
             subjectsPanel.setEnabled(true);
             returnToMenuButton.setVisible(true);
             returnToMenuButton.setEnabled(true);
+            AchievementsButton.setVisible(false);
+            AchievementsButton.setEnabled(false);
+            LogoutButton.setVisible(false);
+            LogoutButton.setEnabled(false);
         });
         AchievementsButton.addActionListener(e -> {
             System.out.println("Achievements Button Clicked");
@@ -142,7 +154,7 @@ public class MenuFrame extends JPanel{
             previousFrame.setContentPane(new LoginFrame(previousFrame));
             previousFrame.revalidate();
         });
-        
+
         //add buttons to main panel
         menuPanel.add(returnToMenuButton);
         menuPanel.add(Box.createVerticalStrut(20));//Button padding
