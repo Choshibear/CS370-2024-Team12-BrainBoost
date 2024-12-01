@@ -59,6 +59,8 @@ public class Main
                 return attempts.getAttempt(Integer.parseInt(req[1]), req[2]);
             case "printLeaderboard":
                 return attempts.printLeaderboard(Integer.parseInt(req[1]));
+            case "getAchievements":
+                return attempts.getAchievements(req[1]);
             default:
                 return "false";
         }

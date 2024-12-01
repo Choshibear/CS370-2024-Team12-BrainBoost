@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Arrays;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -14,14 +15,18 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import com.brainboost.ServerAPI;
 import com.brainboost.User;
 
 public class AchievementsFrame extends JPanel
 {
     private JLabel imageLabel, nameLabel, descriptionLabel;
+    private String username;
+    private String[] achievementArray;
 
     public AchievementsFrame(JFrame previousFrame,User user)
     {
+        username = user.getUsername();
         // title panel
         JPanel titlePanel = new JPanel();
         titlePanel.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 20));
@@ -135,6 +140,8 @@ public class AchievementsFrame extends JPanel
         ImageIcon scaledIcon = new ImageIcon(imageScaled);
         imageLabel.setIcon(scaledIcon);
     }
+
+    // Order is --> Math, Science, History, English, All 
     private boolean checkUnlock(int i)
     {
         //checks user data to see if achievement at the index is unlocked
@@ -146,6 +153,21 @@ public class AchievementsFrame extends JPanel
         //        return false;
         //    }
         //}
-        return i != 2;//testing when achievement 3 is locked
+        //return i != 2;//testing when achievement 3 is locked
+        if(achievementArray != null) {
+            return achievementArray[i].equals("1");
+        }
+
+        try
+        {
+            String achievements = ServerAPI.sendMessage("getAchievements," + username);
+            achievementArray = achievements.split(",");
+        }
+        catch (Exception ex)
+        {
+            System.out.println("Error getting leaderboard: " + ex.getMessage());
+        }
+
+        return achievementArray[i].equals("1");
     }
 }

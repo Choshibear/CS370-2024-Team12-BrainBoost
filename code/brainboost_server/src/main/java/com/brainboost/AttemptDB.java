@@ -107,4 +107,67 @@ public class AttemptDB {
         }
     }
     
+    public String getAchievements(String user) {
+        String res = ""; //Flags in order --> Math, Science, History, English, All
+        int correct = 0;
+
+        // CHECK MATH
+        if(isPerfectScore(user, 1) && isPerfectScore(user, 2)) {
+            res += "1,";
+            correct += 2;
+        } else {
+            res += "0,";
+        }
+
+        // CHECK SCIENCE
+        if(isPerfectScore(user, 3) && isPerfectScore(user, 4)) {
+            res += "1,";
+            correct += 2;
+        } else {
+            res += "0,";
+        }
+
+        // CHECK HISTORY
+        if(isPerfectScore(user, 5) && isPerfectScore(user, 6)) {
+            res += "1,";
+            correct += 2;
+        } else {
+            res += "0,";
+        }
+
+        // CHECK ENGLISH
+        if(isPerfectScore(user, 7) && isPerfectScore(user, 8)) {
+            res += "1,";
+            correct += 2;
+        } else {
+            res += "0,";
+        }
+
+        // CHECK ALL
+        if(correct == 8) {
+            res += "1";
+        } else {
+            res += "0";
+        }
+
+        return res;
+        
+    }
+
+    public boolean isPerfectScore(String user, int quiz_id) {
+        try (Connection conn = DriverManager.getConnection(DB_URL)) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(
+                "SELECT score FROM attempts WHERE user = '" + user + "' AND quiz_id = " + quiz_id
+            );
+            
+            if (rs.next()) {
+                return rs.getInt("score") == 5;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return false;
+    }
 }

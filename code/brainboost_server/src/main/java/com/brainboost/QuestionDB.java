@@ -127,7 +127,7 @@ public final class QuestionDB {
 
     // Populates the database using the questions.txt file
     public void populateQuestionsDB() {
-        String filePath = "code\\brainboost_server\\questions.txt";
+        String filePath = "code/brainboost_server/questions.txt";
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             List<String> questions = new ArrayList<>();
