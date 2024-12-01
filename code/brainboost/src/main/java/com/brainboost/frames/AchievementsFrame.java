@@ -36,19 +36,26 @@ public class AchievementsFrame extends JPanel
 
         //Achievements panel
         JPanel imagesPanel = new JPanel();
-        for(int i = 1; i < 5; i++) //4 clickable image
+        for(int i = 1; i < 6; i++) //5 clickable image
         {
             int index = i;
 
             //load image
             ImageIcon image = new ImageIcon();
+            //windows path
+            String unlockedPath = "code\\brainboost\\imgs\\" + index + ".png";
+            String lockedPath = "code\\brainboost\\imgs\\locked.jpg";
+            //linux path
+            //unlockedPath = "code/brainboost/imgs/" + index + ".png";
+            //lockedPath = "code/brainboost/imgs/locked.jpg";
+
             if(checkUnlock(index-1))
             {
-                image = new ImageIcon("code\\brainboost\\imgs\\" + index + ".png");
+                image = new ImageIcon(unlockedPath);
             }
             else
             {
-                image = new ImageIcon("code\\brainboost\\imgs\\locked.jpg");
+                image = new ImageIcon(lockedPath);
             }
             //scale image down
             Image imageScaled = image.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
@@ -108,16 +115,18 @@ public class AchievementsFrame extends JPanel
     {
         
         String[] names = {
-            "Achievement 1", 
-            "Achievement 2", 
-            "Achievement 3", 
-            "Achievement 4"
+            "Math Wizard", 
+            "Science Guru", 
+            "History Buff", 
+            "English Genius", 
+            "Superstar"
         };
         String[] descriptions = {
-            "Description 1", 
-            "Description 2", 
-            "Description 3", 
-            "Description 4"
+            "Score 5 in both Math 1 and Math 2", 
+            "Score 5 in both Science 1 and Science 2", 
+            "Score 5 in both History 1 and History 2", 
+            "Score 5 in both English 1 and English 2", 
+            "Score 5 in all Quizzes, Nice Job Superstar!"
         };
         //display highlighted image details
         nameLabel.setFont(new Font("Arial", Font.BOLD, 24));
@@ -141,19 +150,10 @@ public class AchievementsFrame extends JPanel
         imageLabel.setIcon(scaledIcon);
     }
 
-    // Order is --> Math, Science, History, English, All 
+    // Order is --> Math, Science, History, English, All
+    //checks if the achievement is unlocked given the index of the array
     private boolean checkUnlock(int i)
     {
-        //checks user data to see if achievement at the index is unlocked
-        //make a list for user like boolean[] achievements ={false,false,false,false}
-        //for(int i = 0; i < thisUser.achievements.length; i++) (not sure about the format rn figure it out when making User class)
-        //{
-        //    if(achievements[i] == false)
-        //    {
-        //        return false;
-        //    }
-        //}
-        //return i != 2;//testing when achievement 3 is locked
         if(achievementArray != null) {
             return achievementArray[i].equals("1");
         }
@@ -162,6 +162,8 @@ public class AchievementsFrame extends JPanel
         {
             String achievements = ServerAPI.sendMessage("getAchievements," + username);
             achievementArray = achievements.split(",");
+            System.out.println("Raw Achievement data from server in the client: " + achievements);
+            System.out.println("Achievement data processed: " + Arrays.toString(achievementArray));
         }
         catch (Exception ex)
         {
