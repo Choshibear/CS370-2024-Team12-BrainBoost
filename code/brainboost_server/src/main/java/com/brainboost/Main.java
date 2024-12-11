@@ -61,6 +61,8 @@ public class Main
                 return attempts.printLeaderboard(Integer.parseInt(req[1]));
             case "getAchievements":
                 return attempts.getAchievements(req[1]);
+            case "checkServer":
+                return "true";
             default:
                 return "false";
         }
