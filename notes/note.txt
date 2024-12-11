@@ -5,3 +5,30 @@ When building the achievements GUI i had an idea to implemtent a boolean array n
   boolean[] isUnlocked = {false,false,true,false}. 
   will research more later for better method.
 -----------------------------------------------------------------------------------------
+Server side will have the databases for the following data tables
+  >UserDB
+  >QuizDB
+  >LeaderboardDB
+
+User Database
+    *userID:int
+            >1234
+    *firstName:String
+            >"John"
+    *lastName:String
+            >"Smith"
+    *userAchievements:boolean[]
+            >[false,false,false,false]
+    
+Quiz Database
+    *quizID:int
+          >5678
+    *quizTaker:int
+          >User.userID
+          >"John Smith
+    *quizData:
+          
+
+Leaderboard:
+    lbUserID
+    lbQuizID
