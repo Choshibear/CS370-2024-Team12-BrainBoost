@@ -19,16 +19,16 @@ public class QuizFrame extends JPanel {
     private String[] questions;
     private int currentQuestionNumber = 1;
     private int score = 0; 
-    private JLabel currentquestionLabel = new JLabel("Loading Question");
-    private JLabel status = new JLabel("No Status");
-    private JLabel scoreLabel = new JLabel("Score: " + score);
-    private JButton[] answerButtons = new JButton[4];
+    private final JLabel currentquestionLabel = new JLabel("Loading Question");
+    private final JLabel status = new JLabel("No Status");
+    private final JLabel scoreLabel = new JLabel("Score: " + score);
+    private final JButton[] answerButtons = new JButton[4];
     
     private boolean currentQuestionAnswered = false;
     
     // To revalidate content pane
-    private JFrame parentFrame; 
-    private User user;
+    private final JFrame parentFrame; 
+    private final User user;
 
     public QuizFrame(JFrame previousFrame, User user) {
         this.parentFrame = previousFrame;
@@ -55,6 +55,7 @@ public class QuizFrame extends JPanel {
         scoreLabel.setFont(new Font("Arial", Font.BOLD, 24));
         scoreLabel.setAlignmentX(CENTER_ALIGNMENT);
         status.setAlignmentX(CENTER_ALIGNMENT);
+        status.setFont(new Font("Arial", Font.BOLD, 18));
         headerPanel.add(scoreLabel);
         headerPanel.add(status);
         status.setVisible(false);
@@ -75,7 +76,6 @@ public class QuizFrame extends JPanel {
             answerButtons[i].setFont(new Font("Arial", Font.BOLD, 24));
 
             //setpreferredSize to the text of the button
-            String textsize = answerButtons[i].getText();
             int width = answerButtons[i].getPreferredSize().width;
             int height = answerButtons[i].getPreferredSize().height;
             answerButtons[i].setPreferredSize(new java.awt.Dimension(width, height));
@@ -88,6 +88,7 @@ public class QuizFrame extends JPanel {
                     status.setText("Correct Answer!");
                     status.setForeground(java.awt.Color.GREEN);
                     answerButtons[finalI].setBackground(java.awt.Color.GREEN);
+                    answerButtons[finalI].setOpaque(true);
                     score++;
                     scoreLabel.setText("Score: " + score);
                 //when the answer is incorrect
@@ -95,6 +96,7 @@ public class QuizFrame extends JPanel {
                     status.setText("Incorrect Answer!");
                     status.setForeground(java.awt.Color.RED);
                     answerButtons[finalI].setBackground(java.awt.Color.RED);
+                    answerButtons[finalI].setOpaque(true);
                 }
                 currentQuestionAnswered = true;
                 status.setVisible(true);
@@ -227,7 +229,7 @@ public class QuizFrame extends JPanel {
     private void disableAnswerButtons() {
         for (JButton button : answerButtons) {
             button.setEnabled(false);
-            button.setBackground(null);
+            button.setOpaque(true);
         }
     }
 
@@ -247,5 +249,17 @@ public class QuizFrame extends JPanel {
             System.out.println("Error saving attempt: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public JLabel getStatus() {
+        return status;
+    }
+
+    public JLabel getScoreLabel() {
+        return scoreLabel;
+    }
+
+    public JButton[] getAnswerButtons() {
+        return answerButtons;
     }
 }
